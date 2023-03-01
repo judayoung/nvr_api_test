@@ -1,35 +1,16 @@
 var http = require('http');
 
-http.createServer(function(req, res){
-    console.log(`Server running at http://${req.headers.host}`);
+function start(port) {
+    function onRequest(req, res){
+        console.log('Request received.');
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write('Hello World! It\'s module server.');
+        res.end();
+    }
 
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write('Hello Node. It\'s Anonymous Function.');
-    res.end();
-}).listen(55556);
+    http.createServer(onRequest).listen(port);
 
-function onRequest(req, res){
-    console.log(`Server running at http://${req.headers.host}`);
-    
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write(`Hello Node. It's Function onRequest.`);
-    res.end();
+    console.log('server is working. port: ' + port);
 }
 
-http.createServer(onRequest).listen(55557);
-
-var server3 = http.createServer();
-
-server3.addListener('request', function(req, res){
-    console.log(`Server running at http://${req.headers.host}`);
-
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write(`Hello Node. addListener. request.`);
-    res.end();
-});
-
-server3.addListener('connection', function(req, res){
-    console.log('client connected...'); // 왜 두번 찍힐까?
-});
-
-server3.listen(55558);
+exports.start = start;
