@@ -8,19 +8,10 @@ function start(port, route, handle) {
         var pathname = url.parse(req.url).pathname;
         console.log(`Request for ${pathname} received.`);
 
-        route(handle, pathname); // injected function call
-
-        write(res, `pathname=${pathname}`);
+        route(handle, pathname, res); // injected function call
     }
 
     http.createServer(onRequest).listen(port);
 
     console.log('server is working. port: ' + port);
-}
-
-function write(res, msg){
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write('Hello World! It\'s module server.\n');
-    res.write(`msg : ${msg}\n`);
-    res.end();
 }
